@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import static org.zhmh.TypedString.getTemplate;
 
@@ -45,6 +46,8 @@ public class MainTest {
         assert is != null;
         String text = EasyIO.readTextAsUTF8(is);
         TemplateString ts = TemplateString.make(text);
+        ts.setVariableMap(new HashMap<>());
+
         String str = ts.toString();
         String[] lines = str.split("\\n");
         Assert.assertNotEquals(ts, null);
