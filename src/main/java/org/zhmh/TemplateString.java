@@ -2,18 +2,13 @@ package org.zhmh;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
 abstract public class TemplateString {
     protected List<TypedString> template;
     protected Map<String, String> variable;
-
-    public void setVariableMap(Map<String, String> variableMap) {
-        assert null != variableMap;
-        this.variable = variableMap;
-    }
 
     public void setVariable(String name, String value) {
         assert null != variable;
@@ -39,7 +34,7 @@ abstract public class TemplateString {
 
     // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 
-    static class SimpleTemplateString extends TemplateString {
+    protected static class SimpleTemplateString extends TemplateString {
         @Override
         public void dumpString(StringBuilder builder) {
             assert null != variable;
@@ -63,14 +58,18 @@ abstract public class TemplateString {
         }
     }
 
+    public static TemplateString newInstance(List<TypedString> template, Map<String, String> variable) {
+        TemplateString t = new SimpleTemplateString();
+        t.template = template;
+        t.variable = variable;
+        return t;
+    }
+
     public static TemplateString make(String s) {
         if (null == s) return null;
         List<TypedString> template = TypedString.getTemplate(s);
         if (template.isEmpty()) return null;
-        TemplateString t = new SimpleTemplateString();
-        t.template = template;
-        // t.variable = new HashMap<>();
-        return t;
+        return newInstance(template, new Hashtable<>());
     }
 
     public static TemplateString make(InputStream is) {
