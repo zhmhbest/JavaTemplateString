@@ -2,6 +2,9 @@ package org.zhmh;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import static org.zhmh.TypedString.getTemplate;
 
@@ -12,7 +15,9 @@ public class MainTest {
         arr = getTemplate("456${abc}123\\${ppp}qwe");
         Assert.assertEquals(arr.size(), 3);
         Assert.assertEquals(arr.get(1).value, "abc");
+        Assert.assertEquals(arr.get(1).type, TypedString.TypedStringTypes.TYPED_EL);
         Assert.assertEquals(arr.get(2).value, "123${ppp}qwe");
+        Assert.assertEquals(arr.get(2).type, TypedString.TypedStringTypes.TYPED_STRING);
 
         arr = getTemplate("123456\\n");
         Assert.assertEquals(arr.size(), 1);
@@ -32,5 +37,26 @@ public class MainTest {
         Assert.assertEquals(arr.get(1).value, "|");
         Assert.assertEquals(arr.get(2).value, "x-123");
         Assert.assertEquals(arr.get(3).value, "|$");
+    }
+
+    @Test
+    public void testTemplateString() throws IOException {
+        InputStream is = MainTest.class.getResourceAsStream("/TemplateString.jsp");
+        assert is != null;
+        String text = EasyIO.readTextAsUTF8(is);
+        TemplateString ts = TemplateString.make(text);
+        String str = ts.toString();
+        String[] lines = str.split("\\n");
+        Assert.assertNotEquals(ts, null);
+        Assert.assertEquals(lines[3], "<form action=\"${Undefined variable 'base'}/user/login\">");
+        Assert.assertEquals(lines[7], "    <pre>\\\t\\</pre>");
+        Assert.assertEquals(lines[8], "    <pre>${abc}</pre>");
+
+        ts.setVariable("base", "localhost");
+        ts.setVariable("abc", "123");
+        str = ts.toString();
+        lines = str.split("\\n");
+        Assert.assertEquals(lines[3], "<form action=\"localhost/user/login\">");
+        Assert.assertEquals(lines[8], "    <pre>${abc}</pre>");
     }
 }
