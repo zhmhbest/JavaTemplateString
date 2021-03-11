@@ -37,6 +37,7 @@ abstract public class TemplateString {
     protected static class SimpleTemplateString extends TemplateString {
         @Override
         public void dumpString(StringBuilder builder) {
+            // System.out.println("-");
             assert null != variable;
             assert null != builder;
             for (TypedString part : template) {
