@@ -65,7 +65,7 @@ public class MultiTemplateString extends TemplateString {
     public void dumpString(StringBuilder builder, int[] depth) {
         // System.out.println(depth[0]);
         if (depth[0] >= 50) {
-            throw new StackOverflowError("The process may have fallen into a loop.");
+            throw new StackOverflowError("The process may have fallen into a death loop.");
         }
         for (TypedString part : template) {
             switch (part.type) {
