@@ -98,9 +98,10 @@ public class MultiTemplateString extends TemplateString {
 
     @Override
     public void dumpString(StringBuilder builder) {
+        assert null != builder;
         assert null != variable;
         assert null != subTemplateMap;
-        assert null != builder;
+        assert null != subMultiTemplateMap;
         int[] depth = {0};
         dumpString(builder, depth);
     }
