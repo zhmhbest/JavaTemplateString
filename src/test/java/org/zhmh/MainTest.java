@@ -61,4 +61,20 @@ public class MainTest {
         Assert.assertEquals(lines[3], "<form action=\"localhost/user/login\">");
         Assert.assertEquals(lines[8], "    <pre>${abc}</pre>");
     }
+
+    @Test
+    public void MultiTemplateString() {
+        MultiTemplateString mts = new MultiTemplateString(TypedString.getTemplate("^^^${a}|${b}|${c}$$$"));
+        mts.addSubSimpleTemplate("a", "[${aa}]");
+        Assert.assertEquals(mts.toString(),
+                "^^^[${Undefined variable 'aa'}]|${Undefined variable 'b'}|${Undefined variable 'c'}$$$");
+        mts.setVariable("aa", "AA");
+        mts.addSubMultiTemplate("b", "(${c})");
+        mts.addSubMultiTemplate("c", "[${d}]");
+        mts.addSubMultiTemplate("d", "{${d1}+${d2}+${d3}}");
+        mts.setVariable("d1", "11");
+        mts.setVariable("d2", "22");
+        mts.setVariable("d3", "33");
+        Assert.assertEquals(mts.toString(), "^^^[AA]|([{11+22+33}])|[{11+22+33}]$$$");
+    }
 }
