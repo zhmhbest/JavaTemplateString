@@ -21,6 +21,7 @@ public class MultiTemplateString extends TemplateString {
     }
 
     public MultiTemplateString(List<TypedString> template) {
+        assert 0 != template.size();
         this.template = template;
         this.variable = new Hashtable<>();
         this.subTemplateMap = new Hashtable<>();
@@ -28,8 +29,29 @@ public class MultiTemplateString extends TemplateString {
     }
 
     public MultiTemplateString(String s) {
-        this(TypedString.getTemplate(s));
-        assert null != this.template;
+        assert null != s;
+        List<TypedString> template = TypedString.getTemplate(s);
+        assert 0 != template.size();
+        this.template = template;
+        this.variable = new Hashtable<>();
+        this.subTemplateMap = new Hashtable<>();
+        this.subMultiTemplateMap = new HashSet<>();
+    }
+
+    public MultiTemplateString(InputStream is) {
+        String s = null;
+        try {
+            s = EasyIO.readTextAsUTF8(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assert null != s;
+        List<TypedString> template = TypedString.getTemplate(s);
+        assert 0 != template.size();
+        this.template = template;
+        this.variable = new Hashtable<>();
+        this.subTemplateMap = new Hashtable<>();
+        this.subMultiTemplateMap = new HashSet<>();
     }
 
     // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
