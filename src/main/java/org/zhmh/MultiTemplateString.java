@@ -1,5 +1,7 @@
 package org.zhmh;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 public class MultiTemplateString extends TemplateString {
@@ -40,6 +42,18 @@ public class MultiTemplateString extends TemplateString {
                 TemplateString.newInstance(TypedString.getTemplate(s), null)
         );
     }
+    public boolean addSubSimpleTemplate(String name, InputStream is) {
+        String s;
+        try {
+            s = EasyIO.readTextAsUTF8(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return addSubSimpleTemplate(name, s);
+    }
+
+    // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 
     public boolean addSubTemplate(String name, MultiTemplateString t) {
         if (null == subTemplateMap || null == variable || null == t || null == name) return false;
@@ -58,6 +72,16 @@ public class MultiTemplateString extends TemplateString {
                         TypedString.getTemplate(s), null, null, null
                 )
         );
+    }
+    public boolean addSubMultiTemplate(String name, InputStream is) {
+        String s;
+        try {
+            s = EasyIO.readTextAsUTF8(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return addSubMultiTemplate(name, s);
     }
 
     // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
