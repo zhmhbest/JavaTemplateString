@@ -64,7 +64,7 @@ public class MainTest {
 
     @Test
     public void MultiTemplateString() {
-        MultiTemplateString mts = new MultiTemplateString(TypedString.getTemplate("^^^${a}|${b}|${c}$$$"));
+        MultiTemplateString mts = new MultiTemplateString("^^^${a}|${b}|${c}$$$");
         mts.addSubSimpleTemplate("a", "[${b}${aa}]");
         Assert.assertEquals(mts.toString(),
                 "^^^[${Undefined variable 'b'}${Undefined variable 'aa'}]|${Undefined variable 'b'}|${Undefined variable 'c'}$$$");

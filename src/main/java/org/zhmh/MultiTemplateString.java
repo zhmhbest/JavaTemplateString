@@ -27,6 +27,11 @@ public class MultiTemplateString extends TemplateString {
         this.subMultiTemplateMap = new HashSet<>();
     }
 
+    public MultiTemplateString(String s) {
+        this(TypedString.getTemplate(s));
+        assert null != this.template;
+    }
+
     // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 
     public boolean addSubTemplate(String name, TemplateString t) {
