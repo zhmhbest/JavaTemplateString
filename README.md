@@ -11,4 +11,25 @@ System.out.println(mts);
 // (Variable A)
 // [Template B: (Variable A)]
 // {Template C: [Template B: (Variable A)]}
+
+// 模板覆盖
+mts.setVariable("template-B", "(Variable B)");
+System.out.println(mts);
+// (Variable A)
+// (Variable B)
+// {Template C: (Variable B)}
+
+// 覆盖解除
+mts.setVariable("template-B", null);
+System.out.println(mts);
+// (Variable A)
+// [Template B: (Variable A)]
+// {Template C: [Template B: (Variable A)]}
+
+// 修改变量
+mts.setVariable("var-A", "((Super Variable AAA))");
+System.out.println(mts);
+// ((Super Variable AAA))
+// [Template B: ((Super Variable AAA))]
+// {Template C: [Template B: ((Super Variable AAA))]}
 ```
