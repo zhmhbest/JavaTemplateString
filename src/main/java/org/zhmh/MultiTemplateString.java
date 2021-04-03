@@ -6,18 +6,18 @@ import java.util.*;
 
 public class MultiTemplateString extends TemplateString {
     protected Map<String, TemplateString> subTemplateMap;
-    protected Set<String> subMultiTemplateMap;
+    protected Set<String> subMultiTemplateSet;
 
     public MultiTemplateString(
             List<TypedString> template,
             Map<String, String> variable,
             Map<String, TemplateString> subTemplateMap,
-            Set<String> subMultiTemplateMap
+            Set<String> subMultiTemplateSet
     ) {
         this.template = template;
         this.variable = variable;
         this.subTemplateMap = subTemplateMap;
-        this.subMultiTemplateMap = subMultiTemplateMap;
+        this.subMultiTemplateSet = subMultiTemplateSet;
     }
 
     public MultiTemplateString(List<TypedString> template) {
@@ -25,7 +25,7 @@ public class MultiTemplateString extends TemplateString {
         this.template = template;
         this.variable = new Hashtable<>();
         this.subTemplateMap = new Hashtable<>();
-        this.subMultiTemplateMap = new HashSet<>();
+        this.subMultiTemplateSet = new HashSet<>();
     }
 
     public MultiTemplateString(String s) {
@@ -35,7 +35,7 @@ public class MultiTemplateString extends TemplateString {
         this.template = template;
         this.variable = new Hashtable<>();
         this.subTemplateMap = new Hashtable<>();
-        this.subMultiTemplateMap = new HashSet<>();
+        this.subMultiTemplateSet = new HashSet<>();
     }
 
     public MultiTemplateString(InputStream is) {
@@ -51,7 +51,7 @@ public class MultiTemplateString extends TemplateString {
         this.template = template;
         this.variable = new Hashtable<>();
         this.subTemplateMap = new Hashtable<>();
-        this.subMultiTemplateMap = new HashSet<>();
+        this.subMultiTemplateSet = new HashSet<>();
     }
 
     // ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -87,9 +87,9 @@ public class MultiTemplateString extends TemplateString {
         // 子模版统一使用主模板的变量表
         t.variable = this.variable;
         t.subTemplateMap = this.subTemplateMap;
-        t.subMultiTemplateMap = this.subMultiTemplateMap;
+        t.subMultiTemplateSet = this.subMultiTemplateSet;
         this.subTemplateMap.put(name, t);
-        this.subMultiTemplateMap.add(name);
+        this.subMultiTemplateSet.add(name);
         return true;
     }
     public boolean addSubMultiTemplate(String name, String s) {
@@ -128,12 +128,11 @@ public class MultiTemplateString extends TemplateString {
                         builder.append(variable.get(part.value));
                     } else if (subTemplateMap.containsKey(part.value)) {
                         depth[0]++;
-                        if (subMultiTemplateMap.contains(part.value)) {
+                        if (subMultiTemplateSet.contains(part.value)) {
                             // Multi
                             ((MultiTemplateString) (subTemplateMap.get(part.value)))
                                     .dumpString(builder, depth);
                         } else {
-                            // depth[0]++;
                             // Simple
                             subTemplateMap.get(part.value).dumpString(builder);
                         }
@@ -152,7 +151,7 @@ public class MultiTemplateString extends TemplateString {
         assert null != builder;
         assert null != variable;
         assert null != subTemplateMap;
-        assert null != subMultiTemplateMap;
+        assert null != subMultiTemplateSet;
         int[] depth = {0};
         dumpString(builder, depth);
     }
